@@ -93,7 +93,7 @@ AC_HELP_STRING([--enable-subunit],
 	       [enable support for the subunit test protocol @<:@default=autodetect@:>@]),
 [case "${enableval}" in
   yes)
-    enable_subunit=true
+    enable_subunit=false
     echo "Enabled subunit support"
     ;;
   no)
@@ -101,7 +101,8 @@ AC_HELP_STRING([--enable-subunit],
     echo "Disabled subunit support"
     ;;
   autodetect)
-    echo "Subunit support will enable automatically."
+  enable_subunit=false
+    echo "Subunit support will disable automatically."
     ;;
   *)   AC_MSG_ERROR(bad value ${enableval} for --enable-subunit) ;;
 esac], 
@@ -254,18 +255,18 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([fcntl.h stddef.h stdlib.h string.h sys/time.h unistd.h])
 AX_CREATE_STDINT_H(check_stdint.h)
 
-AS_IF([test x"$enable_subunit" != "xfalse" && test x"$enable_subunit" != "xtrue"], [
-	PKG_CHECK_EXISTS([libsubunit], [:], [enable_subunit=false])
-	])
-AS_IF([test x"$enable_subunit" != "xfalse"], [
-	PKG_CHECK_MODULES([LIBSUBUNIT], [libsubunit])
-	])
+# AS_IF([test x"$enable_subunit" != "xfalse" && test x"$enable_subunit" != "xtrue"], [
+# 	PKG_CHECK_EXISTS([libsubunit], [:], [enable_subunit=false])
+# 	])
+# AS_IF([test x"$enable_subunit" != "xfalse"], [
+# 	PKG_CHECK_MODULES([LIBSUBUNIT], [libsubunit])
+# 	])
 if test "xfalse" = x"$enable_subunit"; then
 ENABLE_SUBUNIT="0"
 LIBSUBUNIT_PC=""
 else
-ENABLE_SUBUNIT="1"
-LIBSUBUNIT_PC="libsubunit"
+ENABLE_SUBUNIT="0"
+LIBSUBUNIT_PC=""
 fi
 AC_SUBST(ENABLE_SUBUNIT)
 AC_SUBST([LIBSUBUNIT_PC])
